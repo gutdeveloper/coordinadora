@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-coordinadora
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret123
+      MYSQL_DATABASE: coordinadora
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pass123
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis:latest
+    container_name: redis-coordinadora
+    environment:
+      REDIS_HOST: localhost
+    ports:
+      - "6379:6379"
