@@ -1,7 +1,7 @@
 import { User } from "../../../domain/entities/User.entiy";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
 import { HashService } from "../../../domain/services/HashService";
-import { EmailService } from "../../../domain/services/emailService";
+import { EmailService } from "../../../domain/services/EmailService";
 
 export class UserUseCase {
     constructor(
@@ -16,9 +16,7 @@ export class UserUseCase {
         const password = await this.passwordHash.hash(user.password);
         const newUser = User.create(user.name, user.email, password);
         const userRegistered = await this.userRepository.registerUser(newUser);
-        if (userRegistered) {
-            await this.emailService.sendEmailActivation(userRegistered.email, userRegistered.name);
-        }
+        this.emailService.sendEmailActivation(userRegistered.email, userRegistered.name);
         return { email: userRegistered.email };
     }
 }

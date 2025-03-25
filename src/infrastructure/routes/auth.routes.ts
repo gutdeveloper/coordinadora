@@ -5,7 +5,7 @@ import { BcryptService } from '../services/BcryptService';
 import { PrismaUserRepository } from '../repositories/PrismaUserRepository';
 import { validateData } from '../middleware/validation.middleware';
 import { loginUserSchema } from '../validators/loginUserSchema';
-import { JwtService } from '../services/jwtService';
+import { JwtService } from '../services/JwtService';
 
 const router = express.Router();
 
