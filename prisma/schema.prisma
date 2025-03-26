@@ -40,14 +40,15 @@ model User {
 
 model Order {
   id           String   @id @default(uuid())
+  name_recipient  String
+  phone_recipient  String
   address      String
   user_id      String
   user         User     @relation(fields: [user_id], references: [id])
   weight       Int
   dimensions   String
   product_type ProductType
-  status       String   @default("PENDING")
-  notified     Boolean  @default(false)
+  status       String   @default("PENDING")  
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 

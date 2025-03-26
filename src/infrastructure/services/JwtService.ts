@@ -6,10 +6,10 @@ dotenv.config();
 
 export class JwtService implements TokenService {
 
-    generate(email: string): string {
+    generate(id: string): string {
         try {
             const payload: JwtPayload = {
-                email
+                id
             }
             const secretOrPrivateKey = String(process.env.JWT_SECRET);
             const options: SignOptions = {
@@ -26,9 +26,10 @@ export class JwtService implements TokenService {
         const secretOrPrivateKey = String(process.env.JWT_SECRET);
         try {
             const decoded = jwt.verify(token, secretOrPrivateKey) as JwtPayload;
-            return decoded.email as string;
+            return decoded.id;
         } catch (error) {
             console.log(error);
+            throw new Error("Error verifying token");
             return null;
         }
     }

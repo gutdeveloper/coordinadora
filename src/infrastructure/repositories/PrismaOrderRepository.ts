@@ -5,26 +5,47 @@ import { PrismaClient, ProductType } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class PrismaOrderRepository implements OrderRepository {
-    async create(order: Order): Promise<Order> {
+    async create(order: Order): Promise<Pick<Order, "address">> {
         try {
-            return await prisma.order.create({
-                data: { 
-                    ...order, 
-                    product_type: order.product_type as ProductType 
+            const createdOrder = await prisma.order.create({
+                data: {
+                    ...order,
+                    product_type: order.product_type as unknown as ProductType
                 },
-                select: { id: true, address: true, user_id: true, weight: true, dimensions: true, product_type: true, status: true, notified: true },
+                select: { address: true }
             });
+            return createdOrder;
         } catch (error) {
             console.log(error);
             throw new Error("Error creating order");
         }
     }
-    async findAll() {
+    async getOrdersByUserId(user_id: string): Promise<Partial<Order[]>> {
         try {
-            return await prisma.order.findMany();
+            const orders = await prisma.order.findMany({
+                where: {
+                    user_id
+                },
+                select: {
+                    id: true,
+                    address: true,
+                    dimensions: true,
+                    name_recipient: true,
+                    phone_recipient: true,
+                    product_type: true,
+                    status: true,
+                    weight: true,
+                    user_id: true,
+                }
+            });
+            return orders.map(order => ({
+                ...order,
+                product_type: order.product_type as unknown as Order['product_type'],
+                status: order.status as unknown as Order['status']
+            }));
         } catch (error) {
             console.log(error);
-            throw new Error("Error finding orders");
+            throw new Error("Error getting orders");
         }
     }
 }
