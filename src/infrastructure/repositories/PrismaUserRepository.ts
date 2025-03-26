@@ -32,4 +32,17 @@ export class PrismaUserRepository implements UserRepository {
         }
 
     }
+    async findUserById(id: string): Promise<User | null> {
+        try {
+            const user = await prisma.user.findUnique({
+                where: { id },
+                select: { id: true, name: true, email: true, password: true, email_verified: true },
+            });
+            if (!user) return null;
+            return user;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error finding user by id");
+        }
+    }
 }
