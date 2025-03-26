@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userRoutes from "./infrastructure/routes/user.routes";
 import authRoutes from "./infrastructure/routes/auth.routes";
 import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit'
 const xss = require("xss-clean"); // Evita el error de TypeScript
 
 dotenv.config();
@@ -33,5 +34,13 @@ app.use(helmet({
 }));
 app.use(xss());
 
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+})
+
+app.use(limiter)
 
 export default app;
