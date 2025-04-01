@@ -1,17 +1,17 @@
 import { Order } from "../../../domain/entities/Order.entity";
 import { NotFoundError } from "../../../domain/errors/NotFoundError";
+import { CacheRepository } from "../../../domain/repositories/CacheRepository";
 import { OrderRepository } from "../../../domain/repositories/OrderRepository";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
 import { MapsService } from "../../../domain/services/MapsService";
 import { SMSService } from "../../../domain/services/SMSService";
-import { RedisCacheRepository } from "../../../infrastructure/cache/CacheRepository";
 export class OrderUseCase {
     constructor(
         private orderRepository: OrderRepository,
         private userRepository: UserRepository,
         private mapsService: MapsService,
         private smsService: SMSService,
-        private readonly cacheRepository: RedisCacheRepository
+        private readonly cacheRepository: CacheRepository
     ) { }
 
     async createOrder(order: Order): Promise<Pick<Order | any, "address">> {

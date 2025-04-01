@@ -6,8 +6,4 @@ export class User {
         public email_verified: boolean = false,
         public id?: string,
     ) { }
-
-    static create(name: string, email: string, password: string): User {
-        return new User(name, email, password);
-    }
 }
